@@ -17,7 +17,9 @@ public class CustomMutex implements Lock {
 
     public void requestCS () {
         while (!this.mylock.lock());
-        while (this.readingThreadIds.size()>0);
+        while (this.readingThreadIds.size()>0){
+            System.out.println("readingThreadIds is present");
+        }
     }
 
     public void releaseCS () {

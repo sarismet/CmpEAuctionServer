@@ -72,7 +72,7 @@ public class ClientHandler extends Thread {
                     String jsonString = "NULL";
                     UUID uuid = UUID.randomUUID();
                     String uuidString = uuid.toString();
-                    User usr = repository.signUp(email,username,password,telno,uuidString);
+                    User usr = repository.signUp(email,username,password,telno,uuidString,this.id);
                     if(usr != null){
                         returnToHashMap.put("user", gson.toJson(usr));
                         jsonString = gson.toJson(returnToHashMap);
@@ -80,6 +80,7 @@ public class ClientHandler extends Thread {
                     else {
                         System.out.println("USER is null ");
                     }
+                    System.out.println("jsonString is in SIGN_UP "+jsonString);
                     PrintWriter pr = new PrintWriter(this.c.getOutputStream(),true);
                     pr.println(jsonString);
                     pr.flush();
@@ -101,7 +102,7 @@ public class ClientHandler extends Thread {
                     pr.flush();
                 }
                 else if (operation.equals("BUY")){
-                    System.out.println("OPERATIONNNNNNNNNNNN  is BUY ");
+                    System.out.println("OPERATION is BUY ");
                     String payload = (String)map.get("PAYLOAD");
                     JSONParser parser = new JSONParser();
                     JSONObject jsonPayload = (JSONObject) parser.parse(payload);

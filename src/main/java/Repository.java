@@ -42,13 +42,14 @@ public class Repository {
         return contentBuilder.toString();
     }
 
-    public User signUp(String email, String username, String password,String telNo,String uuid){
+    public User signUp(String email, String username, String password,String telNo,String uuid,int thread_id){
         ArrayList<String> belongings = new ArrayList<String>();
-        int count = ++Main.USER_COUNT;
+        int count = thread_id;
+        System.out.println("COUNT is "+count);
         String fileName = "database/users/users"+ Integer.toString(count / 10) + ".json";
-        User usr = new User(uuid,username,Main.USER_COUNT,email,password,telNo,5000,belongings);
+        User usr = new User(uuid,username,count,email,password,telNo,5000,belongings);
         userDataBaseMutex.requestCS();
-        if(write(fileName,usr)){
+        if(write(fileName,usr,uuid)){
             userDataBaseMutex.releaseCS();
             return usr;
         }
@@ -214,15 +215,15 @@ public class Repository {
         return json;
     }
 
-    private Boolean write(String fine_name, User usr) {
+    private Boolean write(String fine_name, User usr,String uuid) {
 
         try {
             File f = new File(fine_name);
             if (f.exists()){
                 System.out.println("File exists");
-                userDataBaseMutex.requestCS();
+                userDataBaseMutex.requestReading(uuid);
                 JSONObject json = read(fine_name);
-                userDataBaseMutex.releaseCS();
+                userDataBaseMutex.releaseReading(uuid);
                 JSONArray solutions = (JSONArray) json.get("users");
                 solutions.add(usr.toString());
                 json.put("users",solutions);
