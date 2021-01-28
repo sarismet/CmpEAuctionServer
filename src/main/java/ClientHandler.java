@@ -58,8 +58,10 @@ public class ClientHandler extends Thread {
                     else {
                         System.out.println("USER is null ");
                     }
-                    dout.writeUTF(jsonString);
-                    dout.flush();
+                    System.out.println("jsonString is in LOGIN "+jsonString);
+                    PrintWriter pr = new PrintWriter(this.c.getOutputStream(),true);
+                    pr.println(jsonString);
+                    pr.flush();
                 }
                 else if (operation.equals("SIGN_UP")){
                     String py = (String)map.get("PAYLOAD");
