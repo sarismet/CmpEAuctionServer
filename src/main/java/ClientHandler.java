@@ -89,9 +89,10 @@ public class ClientHandler extends Thread {
                 }
                 else if (operation.equals("SHOW")){
                     System.out.println("SHOWING THE NEW PRODUCTS");
-                    String time = (String)map.get("PAYLOAD");
+
                     String uuid = (String)map.get("UUID");
-                    String product = repository.showNextProduct(time,uuid);
+
+                    String product = repository.showNextProduct(uuid);
                     if(product != "NULL"){
                         System.out.println("product is "+product);
                     }

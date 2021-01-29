@@ -9,10 +9,13 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -77,8 +80,7 @@ public class Repository {
         return null;
     }
 
-    public String showNextProduct(String time,String uuid) {
-        System.out.println("Time is from client "+time);
+    public String showNextProduct(String uuid) {
         String fileName = "database/products.json";
         productDataBaseMutex.requestReading(uuid);
         JSONObject json = read(fileName);
@@ -94,13 +96,22 @@ public class Repository {
             System.out.println("S is ->"+s);
             Gson gson = new Gson();
             Product product = gson.fromJson(s, Product.class);
-
             String time1 = product.time;
+            long miliseconds = 0;
+            try {
+                String pattern = "dd/MM/yyyy HH:mm:ss:SSS";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                Date date = simpleDateFormat.parse(time1);
 
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss");
-            LocalTime t1 = LocalTime.parse(time1, fmt);
-            LocalTime t2 = LocalTime.parse(time, fmt);
-            long miliseconds = ChronoUnit.MILLIS.between(t1, t2);
+                Date nw = new Date();
+                miliseconds = nw.getTime() - date.getTime();
+
+                System.out.println("product "+ simpleDateFormat.format(date) + "now is "+simpleDateFormat.format(nw));
+            }catch (Exception ParseException)
+            {
+
+            }
+
             System.out.println("miliseconds -> "+miliseconds);
             if (miliseconds>300000){
                 productsToRemove.add(product);
