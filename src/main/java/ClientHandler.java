@@ -104,17 +104,20 @@ public class ClientHandler extends Thread {
                     pr.flush();
                 }
                 else if (operation.equals("BUY")){
-                    System.out.println("OPERATION is BUY ");
                     String payload = (String)map.get("PAYLOAD");
+                    System.out.println("PAYLOAD is "+payload);
                     JSONParser parser = new JSONParser();
                     JSONObject jsonPayload = (JSONObject) parser.parse(payload);
                     String userName = (String) jsonPayload.get("USERNAME");
-                    int userId = (int) jsonPayload.get("USERID");
+                    int userId = Integer.valueOf((String)jsonPayload.get("USERID")) ;
                     String productName = (String) jsonPayload.get("PRODUCTNAME");
                     String buyer = repository.buyProduct(userName,userId,productName);
                     System.out.println("buyer is  "+buyer);
+                    returnToHashMap.put("buyer", buyer);
+                    String jsonString = gson.toJson(returnToHashMap);
+                    System.out.println("jsonString is "+jsonString);
                     PrintWriter pr = new PrintWriter(this.c.getOutputStream(),true);
-                    pr.println(buyer);
+                    pr.println(jsonString);
                     pr.flush();
                 }
                 else if (operation.equals("LOG_OUT")){

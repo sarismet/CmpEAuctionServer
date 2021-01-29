@@ -78,6 +78,7 @@ public class Repository {
     }
 
     public String showNextProduct(String time,String uuid) {
+        System.out.println("Time is from client "+time);
         String fileName = "database/products.json";
         productDataBaseMutex.requestReading(uuid);
         JSONObject json = read(fileName);
@@ -144,12 +145,15 @@ public class Repository {
             JSONObject json = read(fileName);
             JSONArray products = (JSONArray) json.get("products");
             int size = products.size();
+            System.out.println("We have "+size+ "number of products");
             for(int i = 0;i<size;i++){
                 String s = (String)products.get(i);
                 Gson gson = new Gson();
                 Product product = gson.fromJson(s, Product.class);
-                if ( product.name == productName ){
-                    if (product.soldTo == "NULL") {
+                System.out.println("product.name is "+product.name);
+                if ( product.name.equals(productName) ){
+                    System.out.println("We found the product");
+                    if (product.soldTo.equals("NULL")) {
                         Boolean isAllowed = false;
                         userDataBaseMutex.requestCS();
                         int fileIndex = userId/10;
@@ -161,8 +165,10 @@ public class Repository {
                             String userInfo = (String)users.get(u);
                             Gson gsonUsers = new Gson();
                             User user = gsonUsers.fromJson(userInfo, User.class);
-                            if (user.username == userName){
+                            if (user.username.equals(userName)){
+                                System.out.println("We found the user");
                                 if (user.balance > product.price) {
+                                    System.out.println("The user can buy it");
                                     user.balance = user.balance - product.price;
                                     isAllowed = true;
                                 }else{
@@ -186,9 +192,11 @@ public class Repository {
                     else {
                         buyerUserName = product.soldTo;
                     }
+                    products.set(i,gson.toJson(product));
                     break;
                 }
             }
+            System.out.println("products after BUY  ->"+products);
             json.put("products",products);
             File f = new File(fileName);
             Writer fileWriter = new FileWriter(f, false); //overwrites file
