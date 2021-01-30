@@ -1,16 +1,16 @@
 CustomLock.java
  CustomLock
-models/Product.java
- models.Product
-models/User.java
- models.User
-CustomMutex.java
- CustomMutex
 Main.java
  Main
-Repository.java
- Repository
+CustomMutex.java
+ CustomMutex
+models/User.java
+ models.User
+models/Product.java
+ models.Product
 ClientHandler.java
  ClientHandler
+Repository.java
+ Repository
 Controller.java
  Controller

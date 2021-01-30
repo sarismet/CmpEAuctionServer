@@ -12,10 +12,10 @@ public class User {
     public String email;
     public String password;
     public String telNo;
-    public int balance;
+    public Double balance;
     public ArrayList<String> belongings;
     public String uuid;
-    public User(String uuid,String username,int id, String email, String password, String telNo, int balance, ArrayList<String> belongings) {
+    public User(String uuid,String username,int id, String email, String password, String telNo, Double balance, ArrayList<String> belongings) {
         this.uuid = uuid;
         this.username = username;
         this.id = id;

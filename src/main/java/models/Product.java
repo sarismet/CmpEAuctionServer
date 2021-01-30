@@ -6,10 +6,10 @@ public class Product {
     public String name;
     public String time;
     public String link;
-    public int price;
+    public Double price;
     public String soldTo;
 
-    public Product(String name,String time,String link, int price, String soldTo) {
+    public Product(String name,String time,String link, Double price, String soldTo) {
         this.name = name;
         this.time = time;
         this.link = link;

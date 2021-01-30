@@ -50,7 +50,7 @@ public class Repository {
         int count = thread_id;
         System.out.println("COUNT is "+count);
         String fileName = "database/users/users"+ Integer.toString(count / 10) + ".json";
-        User usr = new User(uuid,username,count,email,password,telNo,5000,belongings);
+        User usr = new User(uuid,username,count,email,password,telNo,5000000.0,belongings);
         userDataBaseMutex.requestCS();
         if(write(fileName,usr,uuid)){
             userDataBaseMutex.releaseCS();
@@ -113,12 +113,12 @@ public class Repository {
             }
 
             System.out.println("miliseconds -> "+miliseconds);
-            if (miliseconds>300000){
+            if (miliseconds>60000){
                 productsToRemove.add(product);
                 deleteSize++;
             }else{
                 JSONObject productJson = new JSONObject();
-                productJson.put("TIME",(300000-miliseconds));
+                productJson.put("TIME",(60000-miliseconds));
                 productJson.put("products",product);
 
                 productToReturn=  gson.toJson(productJson);
@@ -148,7 +148,7 @@ public class Repository {
         return productToReturn;
     }
 
-    public String buyProduct(String userName,int userId, String productName){
+    public String buyProduct(String userName,int userId, String productName,Double productPrice){
         String buyerUserName = "";
         try{
             productDataBaseMutex.requestCS();
@@ -178,16 +178,18 @@ public class Repository {
                             User user = gsonUsers.fromJson(userInfo, User.class);
                             if (user.username.equals(userName)){
                                 System.out.println("We found the user");
-                                if (user.balance > product.price) {
+                                if (user.balance > productPrice) {
                                     System.out.println("The user can buy it");
-                                    user.balance = user.balance - product.price;
+                                    user.balance = user.balance - productPrice;
                                     isAllowed = true;
                                 }else{
                                     isAllowed = false;
                                 }
+                                users.set(u,gson.toJson(user));
                                 break;
                             }
                         }
+
                         jsonUsers.put("users",users);
                         Writer fileWriter = new FileWriter(fileNameOfUsers, false); //overwrites file
                         fileWriter.write(jsonUsers.toJSONString());
@@ -197,7 +199,7 @@ public class Repository {
                             product.soldTo = userName;
                             buyerUserName = userName;
                         }else{
-                            buyerUserName = "Your balance is not enough to buy this product.";
+                            buyerUserName = "NOT_ENOUGH";
                         }
                     }
                     else {

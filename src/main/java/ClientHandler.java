@@ -112,7 +112,9 @@ public class ClientHandler extends Thread {
                     String userName = (String) jsonPayload.get("USERNAME");
                     int userId = Integer.valueOf((String)jsonPayload.get("USERID")) ;
                     String productName = (String) jsonPayload.get("PRODUCTNAME");
-                    String buyer = repository.buyProduct(userName,userId,productName);
+                    System.out.println("PRODUCTPRICE is "+ (String)jsonPayload.get("PRODUCTPRICE"));
+                    Double productPrice = Double.valueOf((String)jsonPayload.get("PRODUCTPRICE")) ;
+                    String buyer = repository.buyProduct(userName,userId,productName,productPrice);
                     System.out.println("buyer is  "+buyer);
                     returnToHashMap.put("buyer", buyer);
                     String jsonString = gson.toJson(returnToHashMap);
