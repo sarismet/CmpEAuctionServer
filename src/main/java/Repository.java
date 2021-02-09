@@ -45,9 +45,9 @@ public class Repository {
         return contentBuilder.toString();
     }
 
-    public User signUp(String email, String username, String password,String telNo,String uuid,int thread_id){
+    public User signUp(String email, String username, String password,String telNo,String uuid,int user_id){
         ArrayList<String> belongings = new ArrayList<String>();
-        int count = thread_id;
+        int count = user_id;
         System.out.println("COUNT is "+count);
         String fileName = "database/users/users"+ Integer.toString(count / 10) + ".json";
         User usr = new User(uuid,username,count,email,password,telNo,5000000.0,belongings);
