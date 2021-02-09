@@ -16,11 +16,9 @@ public class ClientHandler extends Thread {
     static CustomMutex buyProductMutex = new CustomMutex("buy");
     Socket c;
     Repository  repository;
-    int id;
-    public ClientHandler(Socket client, Repository  repository,int id){
+    public ClientHandler(Socket client, Repository  repository){
         this.c = client;
         this.repository = repository;
-        this.id = id;
     }
 
     public void run() {
@@ -74,7 +72,8 @@ public class ClientHandler extends Thread {
                     String jsonString = "NULL";
                     UUID uuid = UUID.randomUUID();
                     String uuidString = uuid.toString();
-                    User usr = repository.signUp(email,username,password,telno,uuidString,this.id);
+                    Main.USER_COUNT++;
+                    User usr = repository.signUp(email,username,password,telno,uuidString,Main.USER_COUNT);
                     if(usr != null){
                         returnToHashMap.put("user", gson.toJson(usr));
                         jsonString = gson.toJson(returnToHashMap);
