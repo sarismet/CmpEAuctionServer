@@ -106,7 +106,7 @@ public class Repository {
                 Date date = simpleDateFormat.parse(time1);
 
                 Date nw = new Date();
-                miliseconds = nw.getTime() - date.getTime();
+                miliseconds = nw.getTime() + 10800000 - date.getTime();
 
                 System.out.println("product "+ simpleDateFormat.format(date) + "now is "+simpleDateFormat.format(nw));
             }catch (Exception ParseException)
