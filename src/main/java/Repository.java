@@ -61,7 +61,9 @@ public class Repository {
     }
 
     public User login(String email, String password,String uuid) {
-        for (int i = 0; i < fileSize; i++) {
+        File directory=new File("database/users");
+        this.fileSize=directory.list().length;
+        for (int i = 0; i < this.fileSize; i++) {
             String fileName = "database/users/users"+ Integer.toString(i) + ".json";
             userDataBaseMutex.requestReading(uuid);
             JSONObject json = read(fileName);
