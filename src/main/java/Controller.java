@@ -17,8 +17,7 @@ public class Controller {
                 System.out.println("Listening for connection on port 8000 ....");
                 final Socket client = server.accept();
                 System.out.println("client is accepted");
-                Main.USER_COUNT++;
-                ClientHandler ch = new ClientHandler(client,this.repository,Main.USER_COUNT);
+                ClientHandler ch = new ClientHandler(client,this.repository);
                 ch.start();
             }
         }
